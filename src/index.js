@@ -98,7 +98,6 @@ const fi = (function() {
     compact: function(array){
       let newArr = []
       for(let i = 0; i < array.length;i++){
-        // debugger
         if (array[i]){
           newArr.push(array[i])
         }
@@ -106,21 +105,79 @@ const fi = (function() {
       return newArr
     },
     // flatten: flatten, // Bonus
-    // uniq: uniq,
-    // bind: bind,
-    // keys: keys,
-    // values:values,
-    // functions: functions
+    uniq: function(array, isSorted, iteratee){
+      if(!iteratee){
+        iteratee = function identity(element){ return element }
+      }
+      if(!isSorted){
+        let newArr = array.sort()
+        let newNewArr = []
+        let returnVals = []
+        for(let i = 0; i < newArr.length;i++){
+          if (newNewArr.includes(iteratee(newArr[i])) === false){
+            // debugger
+            newNewArr.push(iteratee(newArr[i]))
+            returnVals.push(newArr[i])
+          }
+        }
+        return returnVals
+      } else {
+        let newArr = []
+        let returnVals = []
+        for(let i = 0; i < array.length;i++){
+          if (newArr.includes(iteratee(array[i])) === false){
+            newArr.push(iteratee(array[i]))
+            returnVals.push(array[i])
+          }
+        }
+        return returnVals
+      }
+    },
+    bind: function(funct ,object){
+      return function(){
+        return funct.apply(object, arguments)
+      }
+    },
+    keys: function(object){
+      returnVals = []
+      for (let i in object){
+        returnVals.push(i)
+      }
+      return returnVals
+    },
+    values: function(object){
+      returnVals = []
+      for (let i in object){
+        returnVals.push(object[i])
+      }
+      return returnVals
+    },
+    functions: function(object){
+      let returnVals = []
+      for (let i in object){
+        if(typeof object[i] === "function"){
+          returnVals.push(i)
+        }
+      }
+      returnVals.sort()
+      return returnVals
+    }
   }
 })()
 
-var array = [1,2,3]
+var people = [{name:'john',age:20},{name:'mary',age:31},{name:'kevin',age:20}]
+var func = function(greeting){ return greeting + ': ' + this.name };
+
+var array = [1,1,2,2,3]
 var roman = {
   name: "roman",
   fav_language: "ruby",
   school: "flatiron"
 }
 
+function createPerson(name,language,school){
+  return { name: name, language:language, school:school }
+}
 
 function roman(sum, num){
   return sum+ num
